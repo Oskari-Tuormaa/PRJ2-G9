@@ -11,28 +11,35 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <math.h>
 
 enum commands
 {
-	ON = 0b00101, OFF = 0b00111
+	ON = 0b0010, OFF = 0b0011
+};
+
+enum state
+{
+	IDLE, SENDING
 };
 
 
 class Sender
 {
 private:
-	char m_houseCode;
-	bool m_isZeroCross;
+	char  m_houseCode;
+	state m_currentState;
+	char  m_buffer[101];
+	char  m_dynIndex;
 	
 public:
 	Sender(char houseCode);
 	
-	void setZeroCross(bool isZeroCross);
-	void waitForZeroCross();
-	void sendBit(char bitVal);
-	void sendStart();
-	void sendCommand(commands toSend, unsigned char toUnit);
+	void zeroCross();
+	void sendCommand(commands command, char unit);
+	
+	state getState();
+	char getNext();
+		
 	
 };
 

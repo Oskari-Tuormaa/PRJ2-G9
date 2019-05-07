@@ -10,91 +10,137 @@
  Sender::Sender(char houseCode)
 {
 	m_houseCode = houseCode;
-	m_isZeroCross = false;
+	m_currentState = IDLE;
 	
-	DDRB &= (1 << 7);
+	// Setup buffer with standard template.
+	char temp[101] = "1110000000000000000001111000000000000000000100000011100000000000000000101110000000000000000010000000";
 	
-	sei();
-}
-
-void Sender::setZeroCross(bool isZeroCross)
-{
-	m_isZeroCross = isZeroCross;
-}
-
-void Sender::waitForZeroCross()
-{
-	while(!m_isZeroCross);
-}
-
-void Sender::sendBit(char bitVal)
-{
-	if (bitVal == 0)
-		waitForZeroCross();
-	
-	waitForZeroCross();
-	TCCR0A = 0b01000010;
-	TCCR0B = 0b00000001;
-	OCR0A = 66;
-	
-	TCCR1A = 0b00000000;
-	TCCR1B = 0b00000001;
-	TIMSK1 = 0b00000001;
-	TCNT1 = (pow(2, 16) - 1) - 16000;
-	
-	if (bitVal == 1)
-		waitForZeroCross();
-}
-
-void Sender::sendStart()
-{
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 101; i++)
 	{
-		waitForZeroCross();
-		TCCR0A = 0b01000010;
+		m_buffer[i] = temp[i];
+	}
+	
+	// Loop through house code and add house code to buffer.
+	for (int i = 0; i < 4; i++)
+	{
+		// If bit position 'i' of the house code is 1.
+		if (((m_houseCode >> (3 - i)) & 1) == 1)
+		{
+			m_buffer[4  + i * 2] = '1';
+			m_buffer[5  + i * 2] = '0';
+			
+			m_buffer[26 + i * 2] = '1';
+			m_buffer[27 + i * 2] = '0';
+			
+			m_buffer[54 + i * 2] = '1';
+			m_buffer[55 + i * 2] = '0';
+			
+			m_buffer[76 + i * 2] = '1';
+			m_buffer[77 + i * 2] = '0';
+		}
+		// If bit position 'i' of the house code is 0.
+		else
+		{
+			m_buffer[4  + i * 2] = '0';
+			m_buffer[5  + i * 2] = '1';
+			
+			m_buffer[26 + i * 2] = '0';
+			m_buffer[27 + i * 2] = '1';
+			
+			m_buffer[54 + i * 2] = '0';
+			m_buffer[55 + i * 2] = '1';
+			
+			m_buffer[76 + i * 2] = '0';
+			m_buffer[77 + i * 2] = '1';
+		}
+	}
+}
+
+void Sender::zeroCross()
+{
+	// If Unit doesn't have command to send, exit function.
+	if (m_currentState == IDLE) return;
+	
+	// If next bit to send is '1', activate 120kHz signal.
+	if (m_buffer[m_dynIndex] == '1')
+	{
 		TCCR0B = 0b00000001;
-		OCR0A = 66;
-		
-		TCCR1A = 0b00000000;
 		TCCR1B = 0b00000001;
-		TIMSK1 = 0b00000001;
-		TCNT1 = (pow(2, 16) - 1) - 16000;
+		TCNT1  = 0xffff - 16000;
+		DDRB  |= 0b10000000;
 	}
 	
-	waitForZeroCross();
+	// Increment dynamic index.
+	m_dynIndex++;
+	
+	// If we've reached the end of buffer, set state to IDLE.
+	if (m_dynIndex >= 101)
+	{
+		m_currentState = IDLE;
+	}
 }
 
-void Sender::sendCommand(commands toSend, unsigned char toUnit)
+void Sender::sendCommand(commands command, char unit)
 {
-	unsigned char command = toSend;
+	// If Unit is currently sending command, exit function.
+	if (m_currentState == SENDING) return;
 	
-	for (char i = 0; i < 2; i++)
+	// Loop through unit and command. Add both to buffer.
+	for (int i = 0; i < 4; i++)
 	{
-		sendStart();
-		for (char j = 0; j < 4; j++)
-			sendBit(m_houseCode >> j);
+		// If bit position 'i' of unit is 1.
+		if (((unit >> (3 - i)) & 1) == 1)
+		{
+			m_buffer[12 + i * 2] = '1';
+			m_buffer[13 + i * 2] = '0';
+			
+			m_buffer[34 + i * 2] = '1';
+			m_buffer[35 + i * 2] = '0';
+		}
+		// If bit position 'i' of unit is 0.
+		else
+		{
+			m_buffer[12 + i * 2] = '0';
+			m_buffer[13 + i * 2] = '1';
+			
+			m_buffer[34 + i * 2] = '0';
+			m_buffer[35 + i * 2] = '1';
+		}
 		
-		for (char j = 0; j < 4; j++)
-			sendBit(toUnit >> j);
-		
-		sendBit(0);
+		// If bit position 'i' of command is 1.
+		if (((command >> (3 - i)) & 1) == 1)
+		{
+			m_buffer[62 + i * 2] = '1';
+			m_buffer[63 + i * 2] = '0';
+			
+			m_buffer[84 + i * 2] = '1';
+			m_buffer[85 + i * 2] = '0';
+		}
+		// If bit position 'i' of command is 0.
+		else
+		{
+			m_buffer[62 + i * 2] = '0';
+			m_buffer[63 + i * 2] = '1';
+			
+			m_buffer[84 + i * 2] = '0';
+			m_buffer[85 + i * 2] = '1';
+		}
 	}
 	
-	for (char i = 0; i < 6; i++)
-		waitForZeroCross();
+	// Change state to SENDING.
+	m_currentState = SENDING;
 	
-	for (char i = 0; i < 2; i++)
-	{
-		sendStart();
-		for (char j = 0; j < 4; j++)
-			sendBit(m_houseCode >> j);
-		
-		for (char j = 0; j < 4; j++)
-			sendBit(command >> j);
-		
-		sendBit(0);
-	}
-
-	for (char i = 0; i < 6; i++)
-		waitForZeroCross();
+	// Reset dynamic index to 0.
+	m_dynIndex = 0;
 }
+
+state Sender::getState()
+{
+	return m_currentState;
+}
+
+char Sender::getNext()
+{
+	return m_buffer[m_dynIndex];
+}
+
