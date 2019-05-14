@@ -1,0 +1,6 @@
+﻿  SerialPort.cpp
+  UART_test.cpp
+c:\users\oskar\documents\github\prj2-g9\code\terminal\uart_test\uart_test\uart_test.cpp(5): warning C4005: 'MAX_DATA_LENGTH': macro redefinition
+  c:\users\oskar\documents\github\prj2-g9\code\terminal\uart_test\uart_test\serialport.h(5): note: see previous definition of 'MAX_DATA_LENGTH'
+  Generating Code...
+  UART_test.vcxproj -> C:\Users\oskar\Documents\GitHub\PRJ2-G9\Code\Terminal\UART_test\Debug\UART_test.exe
