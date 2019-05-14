@@ -12,9 +12,11 @@
 #include "uart_int.h"
 
 Sender x10Sender(0b0110);
+bool locked = true;
+bool active = false;
 
 
-// Recieved UART Message
+// Received UART Message
 ISR(USART0_RX_vect)
 {
 	char com = ReadChar();
@@ -22,11 +24,21 @@ ISR(USART0_RX_vect)
 	switch(com >> 4)
 	{
 	case 1:
+		SendChar('1');
 		x10Sender.sendCommand(ON , com & 0xF);
 		break;
 	case 2:
+		SendChar('1');
 		x10Sender.sendCommand(OFF, com & 0xF);
 		break;
+	case 3:
+		if (locked)
+			SendChar('0');
+		else
+		{
+			active = !active;
+			SendChar(active ? 'A' : 'D');
+		}
 	}
 }
 
@@ -77,6 +89,8 @@ int main(void)
 {
 	sei();
 	
+	InitUART(9600, 8, 'N', 1);
+	
 	// Setup timer0 to transmit 120 kHz signal.
 	TCCR0A = 0b01000010;
 	TCCR0B = 0b00000000;
@@ -104,8 +118,6 @@ int main(void)
 	DDRA = 0x00;
 	DDRB = 0xFF;
 	DDRD = 0x00;
-	
-	InitUART(9600, 8, 'N', 1);
     
     while (1) 
     {
