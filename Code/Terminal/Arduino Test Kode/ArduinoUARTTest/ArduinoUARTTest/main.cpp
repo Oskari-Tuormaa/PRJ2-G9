@@ -6,29 +6,55 @@
  */ 
 
 #include <avr/io.h>
-#include "uart.h"
+#include <avr/interrupt.h>
+#include "uart_int.h"
 
+bool locked = true;
+bool active = false;
+
+
+ISR(USART0_RX_vect)
+{
+	char command = ReadChar();
+	
+	switch(command >> 4)
+	{
+	case 1:
+		SendChar('1');
+		PORTB |= (1 << 0);
+		break;
+	case 2:
+		SendChar('1');
+		PORTB &= ~(1 << 0);
+		break;
+	case 3:
+		if (locked)
+			SendChar('0');
+		else
+		{
+			active = !active;
+			SendChar(active ? 'A' : 'D');
+		}
+		break;
+	case 4:
+		SendChar('1');
+		locked = !locked;
+		break;
+	}
+}
 
 int main(void)
 {
+	sei();
+	
+	InitUART(9600, 8, 'N', 1);
+	
 	DDRB = 0xFF;
 	
-	InitUART(9600, 8, 'N');
-	
-    /* Replace with your application code */
     while (1) 
     {
-		char command = ReadChar();
-		
-		switch(command)
-		{
-		case '0':
-			PORTB = 0xFF;
-			break;
-		case '1':
-			PORTB = 0x00;
-			break;
-		}
+	    active ? (PORTB |= (1 << 1)) : (PORTB &= ~(1 << 1));
+	    locked ? (PORTB |= (1 << 2)) : (PORTB &= ~(1 << 2));
     }
 }
 
