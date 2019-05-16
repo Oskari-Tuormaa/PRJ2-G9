@@ -39,8 +39,6 @@ public:
 	
 	state getState();
 	char getNext();
-		
-	
 };
 
 
