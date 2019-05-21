@@ -10,7 +10,7 @@
 #include "x10Reciever.h"
 
 
-x10Reciever x10rec(0b0110, 0b0110);
+x10Reciever x10rec(0b01101001, 0b01101001);
 
 
 // 3.333 ms after zero cross.
@@ -36,12 +36,12 @@ ISR(INT0_vect)
 	x10rec.read();
 	
 	// Turn on 3.333 ms timer.
-	TCCR3B = 0b00000001;
-	TCNT3  = 0xFFFF - 53333;
+	//TCCR3B = 0b00000001;
+	//TCNT3  = 0xFFFF - 53333;
 	
 	// Turn on 6.667 ms timer.
-	TCCR4B = 0b00000011;
-	TCNT4  = 0xFFFF - 1666;
+	//TCCR4B = 0b00000011;
+	//TCNT4  = 0xFFFF - 1666;
 }
 
 int main(void)
@@ -63,7 +63,7 @@ int main(void)
 	EIMSK = 0b00000001;
 	
 	DDRA = 0x00;
-	DDRB = 0x00;
+	DDRB = 0b11111111;
 	DDRD = 0x00;
 	
     /* Replace with your application code */

@@ -10,6 +10,7 @@
 #define __X10RECIEVER_H__
 
 #include <avr/io.h>
+#include "uart.h"
 
 
 enum Command
@@ -31,16 +32,19 @@ private:
 	unsigned char m_houseCode;
 	bool m_isActive;
 	
-	char m_sBuffer;
-	char m_data[2];
-	char m_suffix;
+	unsigned char m_sBuffer;
+	unsigned char m_data[2];
+	unsigned char m_suffix;
 	
-	char m_count;
+	unsigned char m_count;
+	unsigned char m_comCount;
 	
 public:
 	x10Reciever(unsigned char houseCode, unsigned char unitNum);
 	void read();
 	void execute(Command command);
+	
+	inline unsigned char getBuff() { return m_data[0]; }
 
 }; //x10Reciever
 

@@ -28,11 +28,13 @@ void x10Reciever::read()
 	case IDLE:
 		// Add new value to small buffer.
 		m_sBuffer = m_sBuffer << 1;
-		if (PINB7 == 1)
+		if ((PIND & 2) != 0)
+		{
 			m_sBuffer |= 1;
+		}
 		
 		// If the correct start bit sequence is read, enter Recieving state.
-		if ((m_sBuffer & 0xF) == 0b1110)
+		if ((m_sBuffer & 0b00001111) == 0b00001110)
 		{
 			m_state = RECIEVING;
 			m_count = 0;
@@ -42,17 +44,17 @@ void x10Reciever::read()
 	case RECIEVING:
 		// Add carry from [0] to [1] in data array.
 		m_data[1] = m_data[1] << 1;
-		if ((m_data[0] & (1 << 7)) == 1)
+		if ((m_data[0] & (1 << 7)) != 0)
 			m_data[1] |= 1;
 	
 		// Add carry from suffix to [0] in data array.
 		m_data[0] = m_data[0] << 1;
-		if ((m_suffix & 0b10) == 1)
+		if ((m_suffix & 0b10) != 0)
 			m_data[0] |= 1;
 		
 		// Add new value to suffix.
 		m_suffix = m_suffix << 1;
-		if (PINB7 == 1)
+		if ((PIND & 2) != 0)
 			m_suffix |= 1;
 		
 		// Increment counter.
@@ -61,6 +63,8 @@ void x10Reciever::read()
 		// If both m_data and m_suffix is filled.
 		if (m_count >= 18)
 		{
+			m_state = IDLE;
+			
 			// If house code doesn't match, ignore message.
 			if (m_houseCode != m_data[1])
 				return;
@@ -74,17 +78,24 @@ void x10Reciever::read()
 					m_isActive = true;
 				// If message is NOT for this unit.
 				else
+				{
 					m_isActive = false;
+				}
 				break;
 			
 			// Suffix == COMMAND CODE.
 			case 0b10:
+				m_comCount++;
+			
 				// If reciever HASN'T been activated --> Message ISN'T for this unit.
 				if (!m_isActive)
 					return;
 				
+				// If this is the first recieved command, ignore.
+				if (m_comCount < 2)
+					return;
 				// Do given command.
-				switch ((Command)m_data[1])
+				switch (m_data[0])
 				{
 				case ON:
 					execute(ON);
@@ -94,10 +105,9 @@ void x10Reciever::read()
 					execute(OFF);
 					break;
 				}
+				m_comCount = 0;
 				break;
 			}
-			
-			m_state = RECIEVING;
 		}
 		break;
 	}
@@ -105,6 +115,15 @@ void x10Reciever::read()
 
 void x10Reciever::execute(Command command)
 {
-	
+	switch (command)
+	{
+	case ON:
+		PORTB = 0xff;
+		break;
+		
+	case OFF:
+		PORTB = 0x00;
+		break;
+	}
 }
 
