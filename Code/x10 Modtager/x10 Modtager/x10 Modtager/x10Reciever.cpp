@@ -23,18 +23,17 @@ x10Reciever::x10Reciever(unsigned char houseCode, unsigned char unitNum)
 
 void x10Reciever::read()
 {
-	_delay_ms(0.5);
+	//_delay_ms(0.1);
+	PORTF |= 1;
+	_delay_ms(0.1);
+	PORTF &= ~1;
 	switch(m_state)
 	{
 	case IDLE:
 		// Add new value to small buffer.
 		m_sBuffer = m_sBuffer << 1;
 		
-		PORTF |= 1;
-		_delay_ms(0.1);
-		PORTF &= ~1;
-		
-		if ((PIND & 2) != 0)
+		if ((PINH & (1<<5)) != 0)
 		{
 			m_sBuffer |= 1;
 		}
@@ -45,6 +44,8 @@ void x10Reciever::read()
 			m_state = RECIEVING;
 			m_count = 0;
 		}
+		//SendBits(m_sBuffer, 8);
+		//SendChar('\n');
 		break;
 		
 	case RECIEVING:
@@ -60,7 +61,7 @@ void x10Reciever::read()
 		
 		// Add new value to suffix.
 		m_suffix = m_suffix << 1;
-		if ((PIND & 2) != 0)
+		if ((PINH & (1<<5)) != 0)
 			m_suffix |= 1;
 		
 		// Increment counter.
@@ -88,7 +89,10 @@ void x10Reciever::read()
 			case 0b01:
 				// If message IS for this unit.
 				if (m_unitNum == m_data[0])
+				{
 					m_isActive = true;
+					m_comCount = 0;
+				}
 				// If message is NOT for this unit.
 				else
 				{
@@ -118,7 +122,6 @@ void x10Reciever::read()
 					execute(OFF);
 					break;
 				}
-				m_comCount = 0;
 				break;
 			}
 		}

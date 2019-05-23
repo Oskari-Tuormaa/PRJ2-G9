@@ -70,7 +70,7 @@ ISR(TIMER4_OVF_vect)
 }
 
 // Interrupt leg detects zero cross.
-ISR(INT0_vect)
+ISR(INT2_vect)
 {
 	// Initiate zero crossing.
 	x10Sender.zeroCross();
@@ -112,8 +112,8 @@ int main(void)
 	TIMSK4 = 0b00000001;
 	
 	// Setup int0 for Zero-Cross Detection
-	EICRA = 0b00000010;
-	EIMSK = 0b00000001;
+	EICRA = 0b00100000;
+	EIMSK = 0b00000100;
 	
 	DDRA = 0x00;
 	DDRB = 0xFF;

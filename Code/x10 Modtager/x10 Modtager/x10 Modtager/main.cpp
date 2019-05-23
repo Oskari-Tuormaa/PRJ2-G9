@@ -30,18 +30,18 @@ ISR(TIMER4_OVF_vect)
 }
 
 // Interrupt leg detects zero cross.
-ISR(INT0_vect)
+ISR(INT2_vect)
 {
 	// Initiate read.
 	x10rec.read();
 	
 	// Turn on 3.333 ms timer.
-	//TCCR3B = 0b00000001;
-	//TCNT3  = 0xFFFF - 53333;
+	TCCR3B = 0b00000001;
+	TCNT3  = 0xFFFF - 53333;
 	
 	// Turn on 6.667 ms timer.
-	//TCCR4B = 0b00000011;
-	//TCNT4  = 0xFFFF - 1666;
+	TCCR4B = 0b00000011;
+	TCNT4  = 0xFFFF - 1666;
 }
 
 int main(void)
@@ -61,11 +61,12 @@ int main(void)
 	TIMSK4 = 0b00000001;
 	
 	// Setup int0 for Zero-Cross Detection
-	EICRA = 0b00000010;
-	EIMSK = 0b00000001;
+	EICRA = 0b00100000;
+	EIMSK = 0b00000100;
 	
 	DDRA = 0x00;
-	DDRB = 0b11111111;
+	DDRB = 0b01111111;
+	DDRH = 0x00;
 	DDRD = 0x00;
 	DDRF = 0xff;
 	
