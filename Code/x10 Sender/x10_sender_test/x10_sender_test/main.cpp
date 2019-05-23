@@ -5,8 +5,11 @@
  * Author : oskar
  */ 
 
+#define F_CPU 16000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdlib.h>
+#include <util/delay.h>
 
 #include "Sender.h"
 #include "uart_int.h"
@@ -14,7 +17,16 @@
 Sender x10Sender(0b0110);
 bool locked = true;
 bool active = false;
+bool lightOn = false;
 
+
+void delay(int t)
+{
+	for (int i = 0; i < t; i++)
+	{
+		_delay_ms(1000);
+	}
+}
 
 // Received UART Message
 ISR(USART0_RX_vect)
@@ -25,10 +37,12 @@ ISR(USART0_RX_vect)
 	{
 	case 1:
 		SendChar('1');
+		lightOn = true;
 		x10Sender.sendCommand(ON , com & 0xF);
 		break;
 	case 2:
 		SendChar('1');
+		lightOn = false;
 		x10Sender.sendCommand(OFF, com & 0xF);
 		break;
 	case 3:
@@ -39,6 +53,10 @@ ISR(USART0_RX_vect)
 			active = !active;
 			SendChar(active ? 'A' : 'D');
 		}
+		break;
+	case 4:
+		locked = !locked;
+		SendChar('1');
 	}
 }
 
@@ -121,7 +139,23 @@ int main(void)
     
     while (1) 
     {
-		
+	    if (locked)
+			PORTB |= (1<<1);
+	    else
+			PORTB &= ~(1<<1);
+		if (active)
+		{
+			int t = 1 + rand() % 9;
+			delay(t);
+			lightOn = !lightOn;
+			
+			if (lightOn)
+				//PORTB |= (1<<2);
+				x10Sender.sendCommand(ON, 0b0110);
+			else
+				//PORTB &= ~(1<<2);	
+				x10Sender.sendCommand(OFF, 0b0110);
+		}
     }
 }
 
