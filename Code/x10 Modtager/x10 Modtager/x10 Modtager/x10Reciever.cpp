@@ -23,11 +23,17 @@ x10Reciever::x10Reciever(unsigned char houseCode, unsigned char unitNum)
 
 void x10Reciever::read()
 {
+	_delay_ms(0.5);
 	switch(m_state)
 	{
 	case IDLE:
 		// Add new value to small buffer.
 		m_sBuffer = m_sBuffer << 1;
+		
+		PORTF |= 1;
+		_delay_ms(0.1);
+		PORTF &= ~1;
+		
 		if ((PIND & 2) != 0)
 		{
 			m_sBuffer |= 1;
@@ -64,6 +70,13 @@ void x10Reciever::read()
 		if (m_count >= 18)
 		{
 			m_state = IDLE;
+			
+			//SendBits(m_suffix, 2);
+			//SendChar(' ');
+			//SendBits(m_data[0], 8);
+			//SendChar(' ');
+			//SendBits(m_data[1], 8);
+			//SendChar('\n');
 			
 			// If house code doesn't match, ignore message.
 			if (m_houseCode != m_data[1])
@@ -118,10 +131,12 @@ void x10Reciever::execute(Command command)
 	switch (command)
 	{
 	case ON:
+		SendString("ON\n");
 		PORTB = 0xff;
 		break;
 		
 	case OFF:
+		SendString("OFF\n");
 		PORTB = 0x00;
 		break;
 	}

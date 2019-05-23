@@ -11,6 +11,9 @@ x10Reciever.d x10Reciever.o: .././x10Reciever.cpp .././x10Reciever.h \
  e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
+ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
+ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
+ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  .././uart.h
 
 .././x10Reciever.h:
@@ -38,5 +41,11 @@ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\v
 e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
+
+e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
+
+e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
+
+e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 
 .././uart.h:

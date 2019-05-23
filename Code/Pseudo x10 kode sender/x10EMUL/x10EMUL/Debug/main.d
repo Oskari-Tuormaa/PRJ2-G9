@@ -10,7 +10,10 @@ main.d main.o: .././main.cpp \
  e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h
+ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
+ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
+ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
+ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h
 
 e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -35,3 +38,9 @@ e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\f
 e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
 e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
+
+e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
+
+e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
+
+e:\programs\atmel_studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:

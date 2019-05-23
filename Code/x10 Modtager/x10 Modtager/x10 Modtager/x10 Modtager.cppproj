@@ -158,6 +158,12 @@
     <Compile Include="main.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="uart.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="x10Reciever.cpp">
       <SubType>compile</SubType>
     </Compile>
