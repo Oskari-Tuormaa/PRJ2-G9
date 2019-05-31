@@ -40,8 +40,8 @@ ISR(INT2_vect)
 	TCNT3  = 0xFFFF - 53333;
 	
 	// Turn on 6.667 ms timer.
-	TCCR4B = 0b00000011;
-	TCNT4  = 0xFFFF - 1666;
+	TCCR4B = 0b00000010;
+	TCNT4  = 0xFFFF - 13334;
 }
 
 int main(void)
