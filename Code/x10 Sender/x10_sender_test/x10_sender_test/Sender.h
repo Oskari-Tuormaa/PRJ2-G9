@@ -28,7 +28,7 @@ class Sender
 private:
 	char  m_houseCode;
 	state m_currentState;
-	char  m_buffer[101];
+	char  m_buffer[100];
 	char  m_dynIndex;
 	
 public:

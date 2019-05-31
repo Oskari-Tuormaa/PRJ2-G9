@@ -7,7 +7,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         000008ee  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000006a  0080026a  0080026a  000009ec  2**0
+  2 .bss          00000069  0080026a  0080026a  000009ec  2**0
                   ALLOC
   3 .comment      00000030  00000000  00000000  000009ec  2**0
                   CONTENTS, READONLY
@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000e0  00000000  00000000  00000a5c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000176d  00000000  00000000  00000b3c  2**0
+  6 .debug_info   0000177d  00000000  00000000  00000b3c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000010fb  00000000  00000000  000022a9  2**0
+  7 .debug_abbrev 000010fb  00000000  00000000  000022b9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000927  00000000  00000000  000033a4  2**0
+  8 .debug_line   00000906  00000000  00000000  000033b4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000030c  00000000  00000000  00003ccc  2**2
+  9 .debug_frame  0000030c  00000000  00000000  00003cbc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000008a6  00000000  00000000  00003fd8  2**0
+ 10 .debug_str    000008a7  00000000  00000000  00003fc8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000087e  00000000  00000000  0000487e  2**0
+ 11 .debug_loc    0000087e  00000000  00000000  0000486f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000c8  00000000  00000000  000050fc  2**0
+ 12 .debug_ranges 000000c8  00000000  00000000  000050ed  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -186,7 +186,7 @@ Disassembly of section .text:
  118:	1d 92       	st	X+, r1
 
 0000011a <.do_clear_bss_start>:
- 11a:	a4 3d       	cpi	r26, 0xD4	; 212
+ 11a:	a3 3d       	cpi	r26, 0xD3	; 211
  11c:	b2 07       	cpc	r27, r18
  11e:	e1 f7       	brne	.-8      	; 0x118 <.do_clear_bss_loop>
 
@@ -561,12 +561,12 @@ ISR(INT2_vect)
  354:	80 93 94 00 	sts	0x0094, r24	; 0x800094 <__TEXT_REGION_LENGTH__+0x700094>
 	
 	// Turn on 6.667 ms timer.
-	TCCR4B = 0b00000011;
- 358:	83 e0       	ldi	r24, 0x03	; 3
+	TCCR4B = 0b00000010;
+ 358:	82 e0       	ldi	r24, 0x02	; 2
  35a:	80 93 a1 00 	sts	0x00A1, r24	; 0x8000a1 <__TEXT_REGION_LENGTH__+0x7000a1>
-	TCNT4  = 0xFFFF - 1666;
- 35e:	8d e7       	ldi	r24, 0x7D	; 125
- 360:	99 ef       	ldi	r25, 0xF9	; 249
+	TCNT4  = 0xFFFF - 13334;
+ 35e:	89 ee       	ldi	r24, 0xE9	; 233
+ 360:	9b ec       	ldi	r25, 0xCB	; 203
  362:	90 93 a5 00 	sts	0x00A5, r25	; 0x8000a5 <__TEXT_REGION_LENGTH__+0x7000a5>
  366:	80 93 a4 00 	sts	0x00A4, r24	; 0x8000a4 <__TEXT_REGION_LENGTH__+0x7000a4>
 }
@@ -775,10 +775,10 @@ Sender x10Sender(0b0110);
  46c:	da 01       	movw	r26, r20
  46e:	12 96       	adiw	r26, 0x02	; 2
  470:	9e 01       	movw	r18, r28
- 472:	2a 59       	subi	r18, 0x9A	; 154
+ 472:	2b 59       	subi	r18, 0x9B	; 155
  474:	3f 4f       	sbci	r19, 0xFF	; 255
 	
-	for (int i = 0; i < 101; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		m_buffer[i] = temp[i];
  476:	91 91       	ld	r25, Z+
@@ -788,7 +788,7 @@ Sender x10Sender(0b0110);
 	// Setup buffer with standard template.
 	char temp[101] = "1110000000000000000001111000000000000000000100000011100000000000000000101110000000000000000010000000";
 	
-	for (int i = 0; i < 101; i++)
+	for (int i = 0; i < 100; i++)
  47a:	2e 17       	cp	r18, r30
  47c:	3f 07       	cpc	r19, r31
  47e:	d9 f7       	brne	.-10     	; 0x476 <_ZN6SenderC1Ec+0x3e>
@@ -925,7 +925,7 @@ void Sender::zeroCross()
 	
 	// If next bit to send is '1', activate 120kHz signal.
 	if (m_buffer[m_dynIndex] == '1')
- 502:	e9 59       	subi	r30, 0x99	; 153
+ 502:	ea 59       	subi	r30, 0x9A	; 154
  504:	ff 4f       	sbci	r31, 0xFF	; 255
  506:	20 81       	ld	r18, Z
  508:	fc 01       	movw	r30, r24
@@ -952,7 +952,7 @@ void Sender::zeroCross()
 	// Increment dynamic index.
 	m_dynIndex++;
  52a:	fc 01       	movw	r30, r24
- 52c:	e9 59       	subi	r30, 0x99	; 153
+ 52c:	ea 59       	subi	r30, 0x9A	; 154
  52e:	ff 4f       	sbci	r31, 0xFF	; 255
  530:	20 81       	ld	r18, Z
  532:	2f 5f       	subi	r18, 0xFF	; 255
@@ -1130,7 +1130,7 @@ void Sender::sendCommand(commands command, char unit)
 	
 	// Reset dynamic index to 0.
 	m_dynIndex = 0;
- 5e0:	c9 59       	subi	r28, 0x99	; 153
+ 5e0:	ca 59       	subi	r28, 0x9A	; 154
  5e2:	df 4f       	sbci	r29, 0xFF	; 255
  5e4:	18 82       	st	Y, r1
 }

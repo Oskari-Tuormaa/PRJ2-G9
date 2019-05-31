@@ -15,7 +15,7 @@
 	// Setup buffer with standard template.
 	char temp[101] = "1110000000000000000001111000000000000000000100000011100000000000000000101110000000000000000010000000";
 	
-	for (int i = 0; i < 101; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		m_buffer[i] = temp[i];
 	}
