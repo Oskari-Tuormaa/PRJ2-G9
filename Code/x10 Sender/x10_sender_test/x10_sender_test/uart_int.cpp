@@ -25,7 +25,8 @@ Parameters:
   Databits: Wanted number of Data Bits (5-8).
   Parity: 'E' (Even parity), 'O' (Odd parity), otherwise No Parity.
 *************************************************************************/
-void InitUART(unsigned long BaudRate, unsigned char DataBit, char Parity, unsigned char Rx_Int)
+void InitUART(unsigned long BaudRate, unsigned char DataBit,
+	char Parity, unsigned char Rx_Int)
 {
    if (BaudRate < 300 || BaudRate > 115200 || DataBit < 5 || DataBit > 8)
    {

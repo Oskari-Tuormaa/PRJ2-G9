@@ -1,10 +1,3 @@
-/*
- * x10_sender_test.cpp
- *
- * Created: 02-05-2019 15:06:07
- * Author : oskar
- */ 
-
 #define F_CPU 16000000
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -24,7 +17,9 @@ void delay(int t)
 {
 	for (int i = 0; i < t; i++)
 	{
-		_delay_ms(1000);
+		_delay_ms(500);
+		if (!active)
+			break;
 	}
 }
 
@@ -51,12 +46,15 @@ ISR(USART0_RX_vect)
 		else
 		{
 			active = !active;
+			
+			if (active)
+				PORTB |= (1<<2);
+			else
+				PORTB &= ~(1<<2);
+			
 			SendChar(active ? 'A' : 'D');
 		}
 		break;
-	case 4:
-		locked = !locked;
-		SendChar('1');
 	}
 }
 
@@ -133,27 +131,31 @@ int main(void)
 	EICRA = 0b00100000;
 	EIMSK = 0b00000100;
 	
-	DDRA = 0x00;
 	DDRB = 0xFF;
 	DDRD = 0x00;
     
     while (1) 
     {
-	    if (locked)
+		if ((PINH & (1<<5)) != 0)
+			locked = false;
+		else
+			locked = true;
+		
+	    if (!locked)
 			PORTB |= (1<<1);
 	    else
 			PORTB &= ~(1<<1);
+			
 		if (active)
 		{
 			int t = 1 + rand() % 9;
 			delay(t);
-			lightOn = !lightOn;
+			if (active)
+				lightOn = !lightOn;
 			
-			if (lightOn)
-				//PORTB |= (1<<2);
+			if (lightOn && active)
 				x10Sender.sendCommand(ON, 0b0110);
-			else
-				//PORTB &= ~(1<<2);	
+			else if (active)
 				x10Sender.sendCommand(OFF, 0b0110);
 		}
     }

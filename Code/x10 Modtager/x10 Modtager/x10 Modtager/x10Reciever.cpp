@@ -1,11 +1,3 @@
-/*
-* x10Reciever.cpp
-*
-* Created: 20/05/2019 20:38:35
-* Author: oskar
-*/
-
-
 #include "x10Reciever.h"
 
 x10Reciever::x10Reciever(unsigned char houseCode, unsigned char unitNum)
@@ -23,10 +15,7 @@ x10Reciever::x10Reciever(unsigned char houseCode, unsigned char unitNum)
 
 void x10Reciever::read()
 {
-	//_delay_ms(0.1);
-	PORTF |= 1;
 	_delay_ms(0.1);
-	PORTF &= ~1;
 	switch(m_state)
 	{
 	case IDLE:
@@ -44,8 +33,6 @@ void x10Reciever::read()
 			m_state = RECIEVING;
 			m_count = 0;
 		}
-		//SendBits(m_sBuffer, 8);
-		//SendChar('\n');
 		break;
 		
 	case RECIEVING:
@@ -72,13 +59,6 @@ void x10Reciever::read()
 		{
 			m_state = IDLE;
 			
-			//SendBits(m_suffix, 2);
-			//SendChar(' ');
-			//SendBits(m_data[0], 8);
-			//SendChar(' ');
-			//SendBits(m_data[1], 8);
-			//SendChar('\n');
-			
 			// If house code doesn't match, ignore message.
 			if (m_houseCode != m_data[1])
 				return;
@@ -95,9 +75,7 @@ void x10Reciever::read()
 				}
 				// If message is NOT for this unit.
 				else
-				{
 					m_isActive = false;
-				}
 				break;
 			
 			// Suffix == COMMAND CODE.
@@ -111,6 +89,7 @@ void x10Reciever::read()
 				// If this is the first recieved command, ignore.
 				if (m_comCount < 2)
 					return;
+					
 				// Do given command.
 				switch (m_data[0])
 				{
@@ -134,12 +113,10 @@ void x10Reciever::execute(Command command)
 	switch (command)
 	{
 	case ON:
-		SendString("ON\n");
 		PORTB = 0xff;
 		break;
 		
 	case OFF:
-		SendString("OFF\n");
 		PORTB = 0x00;
 		break;
 	}

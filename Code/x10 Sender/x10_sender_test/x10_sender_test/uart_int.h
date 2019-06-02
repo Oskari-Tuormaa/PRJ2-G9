@@ -5,7 +5,8 @@
 * Using UART 0.                         *
 * Henning Hargaard, 4/11 2015           *
 *****************************************/
-void InitUART(unsigned long BaudRate, unsigned char DataBit, char Parity, unsigned char Rx_Int);
+void InitUART(unsigned long BaudRate, unsigned char DataBit,
+	char Parity, unsigned char Rx_Int);
 unsigned char CharReady();
 char ReadChar();
 void SendChar(char Tegn);

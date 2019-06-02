@@ -732,7 +732,7 @@ void x10Reciever::read()
 			m_count = 0;
  42e:	10 86       	std	Z+8, r1	; 0x08
  430:	08 95       	ret
-		//SendChar('\n');
+		}
 		break;
 		
 	case RECIEVING:
@@ -787,9 +787,6 @@ void x10Reciever::read()
 		{
 			m_state = IDLE;
  46c:	10 82       	st	Z, r1
-			//SendChar(' ');
-			//SendBits(m_data[1], 8);
-			//SendChar('\n');
 			
 			// If house code doesn't match, ignore message.
 			if (m_houseCode != m_data[1])
@@ -826,11 +823,9 @@ void x10Reciever::read()
 				}
 				// If message is NOT for this unit.
 				else
-				{
 					m_isActive = false;
  494:	13 82       	std	Z+3, r1	; 0x03
  496:	08 95       	ret
-				}
 				break;
 			
 			// Suffix == COMMAND CODE.
@@ -852,6 +847,7 @@ void x10Reciever::read()
  4a4:	82 30       	cpi	r24, 0x02	; 2
  4a6:	80 f0       	brcs	.+32     	; 0x4c8 <__LOCK_REGION_LENGTH__+0xc8>
 					return;
+					
 				// Do given command.
 				switch (m_data[0])
  4a8:	85 81       	ldd	r24, Z+5	; 0x05

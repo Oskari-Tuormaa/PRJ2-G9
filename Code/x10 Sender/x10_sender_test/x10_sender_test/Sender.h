@@ -1,23 +1,15 @@
-/*
- * Sender.h
- *
- * Created: 02/05/2019 20:25:55
- *  Author: oskar
- */ 
-
-
 #ifndef SENDER_H_
 #define SENDER_H_
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-enum commands
+enum Commands
 {
 	ON = 0b0010, OFF = 0b0011
 };
 
-enum state
+enum State
 {
 	IDLE, SENDING
 };
@@ -27,7 +19,7 @@ class Sender
 {
 private:
 	char  m_houseCode;
-	state m_currentState;
+	State m_currentState;
 	char  m_buffer[101];
 	char  m_dynIndex;
 	
@@ -35,9 +27,9 @@ public:
 	Sender(char houseCode);
 	
 	void zeroCross();
-	void sendCommand(commands command, char unit);
+	void sendCommand(Commands command, char unit);
 	
-	state getState();
+	State getState();
 	char getNext();
 };
 

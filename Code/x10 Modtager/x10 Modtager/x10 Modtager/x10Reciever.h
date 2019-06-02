@@ -1,18 +1,9 @@
-/*
-* x10Reciever.h
-*
-* Created: 20/05/2019 20:38:35
-* Author: oskar
-*/
-
-
 #ifndef __X10RECIEVER_H__
 #define __X10RECIEVER_H__
 
 #define F_CPU 16000000
 #include <avr/io.h>
 #include <util/delay.h>
-#include "uart.h"
 
 
 enum Command

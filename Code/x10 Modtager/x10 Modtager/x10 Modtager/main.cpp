@@ -1,17 +1,9 @@
-/*
- * GccApplication1.cpp
- *
- * Created: 20/05/2019 20:16:18
- * Author : oskar
- */ 
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "x10Reciever.h"
 
 
 x10Reciever x10rec(0b01101001, 0b01101001);
-
 
 // 3.333 ms after zero cross.
 ISR(TIMER3_OVF_vect)
@@ -64,16 +56,12 @@ int main(void)
 	EICRA = 0b00100000;
 	EIMSK = 0b00000100;
 	
-	DDRA = 0x00;
-	DDRB = 0b01111111;
+	DDRB = 0xff;
 	DDRH = 0x00;
 	DDRD = 0x00;
-	DDRF = 0xff;
 	
-    /* Replace with your application code */
     while (1) 
     {
-		
     }
 }
 

@@ -1,19 +1,18 @@
-/*
- * Sender.cpp
- *
- * Created: 02/05/2019 20:25:46
- *  Author: oskar
- */ 
-
 #include "Sender.h"
 
- Sender::Sender(char houseCode)
+Sender::Sender(char houseCode)
 {
 	m_houseCode = houseCode;
 	m_currentState = IDLE;
 	
 	// Setup buffer with standard template.
-	char temp[101] = "1110000000000000000001111000000000000000000100000011100000000000000000101110000000000000000010000000";
+	char temp[101] = 
+		"1110000000000000000001"
+		"1110000000000000000001"
+		"000000"
+		"1110000000000000000010"
+		"1110000000000000000010"
+		"000000";
 	
 	for (int i = 0; i < 101; i++)
 	{
@@ -80,7 +79,7 @@ void Sender::zeroCross()
 	}
 }
 
-void Sender::sendCommand(commands command, char unit)
+void Sender::sendCommand(Commands command, char unit)
 {
 	// If Unit is currently sending command, exit function.
 	if (m_currentState == SENDING) return;
@@ -134,7 +133,7 @@ void Sender::sendCommand(commands command, char unit)
 	m_dynIndex = 0;
 }
 
-state Sender::getState()
+State Sender::getState()
 {
 	return m_currentState;
 }
