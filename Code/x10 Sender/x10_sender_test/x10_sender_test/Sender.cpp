@@ -73,7 +73,7 @@ void Sender::zeroCross()
 	m_dynIndex++;
 	
 	// If we've reached the end of buffer, set state to IDLE.
-	if (m_dynIndex >= 101)
+	if (m_dynIndex > 100)
 	{
 		m_currentState = IDLE;
 	}

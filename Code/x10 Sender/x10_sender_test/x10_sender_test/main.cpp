@@ -117,12 +117,12 @@ int main(void)
 	TCCR1B = 0b00000000;
 	TIMSK1 = 0b00000001;
 	
-	// Setup timer3 for 2.778 ms delay.
+	// Setup timer3 for 3.333 ms delay.
 	TCCR3A = 0b00000000;
 	TCCR3B = 0b00000000;
 	TIMSK3 = 0b00000001;
 	
-	// Setup timer4 for 5.556 ms delay.
+	// Setup timer4 for 6.667 ms delay.
 	TCCR4A = 0b00000000;
 	TCCR4B = 0b00000000;
 	TIMSK4 = 0b00000001;

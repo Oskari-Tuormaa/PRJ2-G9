@@ -69,10 +69,7 @@ void x10Reciever::read()
 			case 0b01:
 				// If message IS for this unit.
 				if (m_unitNum == m_data[0])
-				{
 					m_isActive = true;
-					m_comCount = 0;
-				}
 				// If message is NOT for this unit.
 				else
 					m_isActive = false;
@@ -80,14 +77,9 @@ void x10Reciever::read()
 			
 			// Suffix == COMMAND CODE.
 			case 0b10:
-				m_comCount++;
 			
 				// If reciever HASN'T been activated --> Message ISN'T for this unit.
 				if (!m_isActive)
-					return;
-				
-				// If this is the first recieved command, ignore.
-				if (m_comCount < 2)
 					return;
 					
 				// Do given command.
