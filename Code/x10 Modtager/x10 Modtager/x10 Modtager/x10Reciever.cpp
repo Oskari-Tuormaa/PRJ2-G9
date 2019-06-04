@@ -16,6 +16,9 @@ x10Reciever::x10Reciever(unsigned char houseCode, unsigned char unitNum)
 void x10Reciever::read()
 {
 	_delay_ms(0.1);
+	// PORTF = 0b00000001;
+	//_delay_ms(0.1);
+	// PORTF = 0;
 	switch(m_state)
 	{
 	case IDLE:

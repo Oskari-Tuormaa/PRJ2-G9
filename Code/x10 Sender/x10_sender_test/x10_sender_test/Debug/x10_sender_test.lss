@@ -637,7 +637,7 @@ int main(void)
  3ae:	81 e0       	ldi	r24, 0x01	; 1
  3b0:	80 93 6f 00 	sts	0x006F, r24	; 0x80006f <__TEXT_REGION_LENGTH__+0x70006f>
 	
-	// Setup timer3 for 2.778 ms delay.
+	// Setup timer3 for 3.333 ms delay.
 	TCCR3A = 0b00000000;
  3b4:	10 92 90 00 	sts	0x0090, r1	; 0x800090 <__TEXT_REGION_LENGTH__+0x700090>
 	TCCR3B = 0b00000000;
@@ -645,7 +645,7 @@ int main(void)
 	TIMSK3 = 0b00000001;
  3bc:	80 93 71 00 	sts	0x0071, r24	; 0x800071 <__TEXT_REGION_LENGTH__+0x700071>
 	
-	// Setup timer4 for 5.556 ms delay.
+	// Setup timer4 for 6.667 ms delay.
 	TCCR4A = 0b00000000;
  3c0:	10 92 a0 00 	sts	0x00A0, r1	; 0x8000a0 <__TEXT_REGION_LENGTH__+0x7000a0>
 	TCCR4B = 0b00000000;
@@ -998,7 +998,7 @@ void Sender::zeroCross()
  546:	20 83       	st	Z, r18
 	
 	// If we've reached the end of buffer, set state to IDLE.
-	if (m_dynIndex >= 101)
+	if (m_dynIndex > 100)
  548:	25 36       	cpi	r18, 0x65	; 101
  54a:	10 f0       	brcs	.+4      	; 0x550 <_ZN6Sender9zeroCrossEv+0x44>
 	{

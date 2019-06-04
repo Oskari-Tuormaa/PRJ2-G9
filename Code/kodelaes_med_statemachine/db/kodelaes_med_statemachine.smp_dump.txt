@@ -1,0 +1,17 @@
+
+State Machine - |kodelaes_sm_p_a|kodelaes_sm:U1|present_state
+Name present_state.permanently_locked present_state.blink_6 present_state.blink_5 present_state.blink_4 present_state.blink_3 present_state.blink_2 present_state.blink_1 present_state.wrong_code present_state.unlocked present_state.evaluating_code_2 present_state.getting_code_2 present_state.evaluating_code_1 present_state.going_idle present_state.idle 
+present_state.idle 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+present_state.going_idle 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+present_state.evaluating_code_1 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+present_state.getting_code_2 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+present_state.evaluating_code_2 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+present_state.unlocked 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+present_state.wrong_code 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+present_state.blink_1 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+present_state.blink_2 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+present_state.blink_3 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+present_state.blink_4 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+present_state.blink_5 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+present_state.blink_6 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+present_state.permanently_locked 1 0 0 0 0 0 0 0 0 0 0 0 0 1 

@@ -40,8 +40,6 @@ int main(void)
 {
 	sei();
 	
-	InitUART(9600, 8, 0);
-	
 	// Setup timer3 for 2.778 ms delay.
 	TCCR3A = 0b00000000;
 	TCCR3B = 0b00000000;
@@ -59,6 +57,8 @@ int main(void)
 	DDRB = 0xff;
 	DDRH = 0x00;
 	DDRD = 0x00;
+	
+	DDRF = 0xff;
 	
     while (1) 
     {
